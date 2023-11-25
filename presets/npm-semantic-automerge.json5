@@ -1,0 +1,69 @@
+{
+  packageRules: [
+    // Update minor and patch dev dependencies:
+    // - Safe to automerge if tests pass.
+    // - Utilizes "chore" because there is no explicit reason we need to cut a
+    //   new release for this update.
+    {
+      matchManagers: ["npm"],
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
+      semanticCommitType: "chore",
+      rangeStrategy: "pin",
+      automerge: true,
+      separateMinorPatch: true,
+    },
+    // Update major dev dependencies:
+    // - Not safe to automerge as it may introduce breaking changes.
+    // - Utilizes "feat" to ensure at a minimum, a new minor version. Manual
+    //   intervention is required to determine if a major version is needed.
+    {
+      matchManagers: ["npm"],
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["major"],
+      semanticCommitType: "feat",
+      rangeStrategy: "pin",
+      automerge: false,
+      separateMinorPatch: true,
+    },
+    // Update patch production dependencies:
+    // - Safe to automerge if tests pass.
+    // - Utilizes "fix" to mirror the semantic commit type of the update, which
+    //   should result in a patch version bump.
+    {
+      matchManagers: ["npm"],
+      matchDepTypes: ["dependencies"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      rangeStrategy: "auto",
+      automerge: true,
+      separateMinorPatch: true,
+    },
+    // Update minor production dependencies:
+    // - Safe to automerge if tests pass.
+    // - Utilizes "feat" to mirror the semantic commit type of the update, which
+    //   should result in a feat version bump.
+    {
+      matchManagers: ["npm"],
+      matchDepTypes: ["dependencies"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      rangeStrategy: "auto",
+      automerge: true,
+      separateMinorPatch: true,
+    },
+    // Update mahor production dependencies:
+    // - NOT SAFE TO AUTOMERGE.
+    // - Utilizes "feat" to ensure at a minimum, a new minor version. Manual
+    //   intervention is required to determine if a major version is needed.
+    {
+      matchManagers: ["npm"],
+      matchDepTypes: ["dependencies"],
+      matchUpdateTypes: ["major"],
+      semanticCommitType: "feat",
+      rangeStrategy: "auto",
+      automerge: false,
+      separateMinorPatch: true,
+    },
+  ],
+}
